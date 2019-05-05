@@ -6,9 +6,9 @@ export class Rectangle extends GameObject{
     public fillColor: string;
     public borderColor?: string;
 
-    constructor(x:number, y:number, width:number, height:number, fillColor:string, borderColor?:string){
+    constructor(x:number, y:number, width:number, height:number, fillColor?:string, borderColor?:string){
         super(x, y);
-        this.fillColor = fillColor;
+        this.fillColor = fillColor || "white";
         this.width = width;
         this.height = height;      
         this.borderColor = borderColor;

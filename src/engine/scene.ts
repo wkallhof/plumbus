@@ -4,6 +4,7 @@ import { KeyboardInputManager } from "./input/keyboard-input-manager";
 import { Rectangle } from "./game-objects/rectangle";
 import { Text } from "./game-objects/text";
 import { Camera } from "./camera";
+import { ImageObject } from "./game-objects/image";
 
 export class Scene{
 
@@ -33,6 +34,12 @@ export class Scene{
         let textObject = new Text(text, x, y, color, fontSize, font);
         this.gameObjects.push(textObject);
         return textObject;
+    }
+
+    public addImage(source: string, x: number, y:number, width?: number){
+        let imageObject = new ImageObject(source, x, y, width);
+        this.gameObjects.push(imageObject);
+        return imageObject;
     }
 
     public preload(){
