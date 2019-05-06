@@ -42,6 +42,8 @@ export class Camera{
 
         this.drawGameObjects();
         this.game.displayContext.translate(this.x, this.y);
+
+        this.game.displayContext.setTransform(1,0,0,1,0,0);
     }
 
     private adjustForTarget(){

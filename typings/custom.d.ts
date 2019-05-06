@@ -21,3 +21,4 @@ declare var OffscreenCanvas: {
 }
 
 declare module '*.png'
+declare module '*.mp3'

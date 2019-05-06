@@ -3,6 +3,7 @@ import { FpsMonitor } from "./fps-monitor";
 import { GameObject } from "./game-objects/game-object";
 import { KeyboardInputManager } from "./input/keyboard-input-manager";
 import { Camera } from "./camera";
+import { AudioPlayer } from "./audio-player";
 
 export class Game{
 
@@ -36,6 +37,7 @@ export class Game{
         this.currentScene.game = this;
         this.currentScene.camera = new Camera(this, 0, 0, this.width, this.height);
         this.currentScene.keyboard = this._keyboard;
+        this.currentScene.audio = new AudioPlayer();
         this.currentScene.preload();
         this.currentScene.create();
 

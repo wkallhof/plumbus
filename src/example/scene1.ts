@@ -1,7 +1,8 @@
 import { Scene } from "../engine/scene";
-import { Rectangle } from "../engine/game-objects/rectangle";
 import { Text } from "../engine/game-objects/text";
 import plumbus from "./plumbus.png";
+import song from "./song.mp3";
+import wet from "./wet.mp3";
 import { ImageObject } from "../engine/game-objects/image";
 import { GameObject } from "../engine/game-objects/game-object";
 
@@ -10,13 +11,23 @@ export class Scene1 extends Scene{
     private _user!: ImageObject;
     private _text!: Text;
 
-    private _plumbuses: GameObject[];
+    private _plumbuses!: GameObject[];
+
+    private _songBuffer! : AudioBuffer;
+    private _wetBuffer! : AudioBuffer;
+
+    private _songInstance! : AudioBufferSourceNode;
 
     constructor(){
         super("Scene1");
     }
 
-    public create(){
+    public preload(){
+        this.loadAudio(song).then((buffer) => this._songBuffer = buffer);
+        this.loadAudio(wet).then((buffer) => this._wetBuffer = buffer);
+    }
+
+    public async create(){
         const worldWidth = 3200;
         const worldHeight = 1000;
 
@@ -32,10 +43,22 @@ export class Scene1 extends Scene{
         this.camera.setBounds(0, 0, worldWidth, worldHeight);
 
         this.drawPlumbuses();
+
+        this.keyboard.P.on("keyup", () => {
+            this._songInstance = this.playAudio(this._songBuffer);
+        });
+
+        this.keyboard.L.on("keyup", () => {
+            this.stopAudio(this._songInstance);
+        })
+
+        this.keyboard.I.on("keyup", () => {
+            this.playAudio(this._wetBuffer);
+        })
     }
 
     private drawPlumbuses() {
-        var plumbusCount = 1000;
+        var plumbusCount = 100;
         this._plumbuses = [];
 
         for(let i = 0; i < plumbusCount; i++){

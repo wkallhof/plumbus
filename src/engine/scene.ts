@@ -5,6 +5,7 @@ import { Rectangle } from "./game-objects/rectangle";
 import { Text } from "./game-objects/text";
 import { Camera } from "./camera";
 import { ImageObject } from "./game-objects/image";
+import { AudioPlayer } from "./audio-player";
 
 export class Scene{
 
@@ -13,6 +14,7 @@ export class Scene{
     public keyboard!: KeyboardInputManager;
     public camera!: Camera
     public gameObjects: GameObject[];
+    public audio!: AudioPlayer;
 
     constructor(name: string){
         this.name = name;
@@ -41,6 +43,19 @@ export class Scene{
         this.gameObjects.push(imageObject);
         return imageObject;
     }
+
+    public async loadAudio(filepath: string) {
+        return await this.audio.loadAudio(filepath);
+    }
+
+    public playAudio(source: AudioBuffer){
+        return this.audio.playAudio(source);
+    }
+
+    public stopAudio(source: AudioBufferSourceNode){
+        return this.audio.stopAudio(source);
+    }
+
 
     public preload(){
 
