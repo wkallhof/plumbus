@@ -36,9 +36,14 @@ export class Camera{
         this.adjustForTarget();
         this.adjustForBounds();
 
-        this.game.displayContext.scale(this.zoom, this.zoom);
+        
+        //
 
-        this.game.displayContext.translate(-this.x, -this.y);
+        //this.game.displayContext.scale(this.zoom, this.zoom);
+        this.game.displayContext.setTransform(this.zoom, 0, 0, this.zoom, this.width / 2, this.height / 2);
+        this.game.displayContext.translate(-this.x - (this.width  / 2), -this.y -(this.height / 2));
+        
+        
 
         this.drawGameObjects();
         this.game.displayContext.translate(this.x, this.y);
@@ -92,8 +97,7 @@ export class Camera{
             if((object.x + object.width) <= this.x 
             || (object.y + object.height) <= this.y
             || (object.x > this.x + (this.width))
-            || (object.y > this.y + (this.height))
-            )
+            || (object.y > this.y + (this.height)))
                 return;
 
             object.update(this.game);

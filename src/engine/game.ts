@@ -38,10 +38,11 @@ export class Game{
         this.currentScene.camera = new Camera(this, 0, 0, this.width, this.height);
         this.currentScene.keyboard = this._keyboard;
         this.currentScene.audio = new AudioPlayer();
-        this.currentScene.preload();
-        this.currentScene.create();
-
-        window.requestAnimationFrame(this.update.bind(this));
+        
+        this.currentScene.preload().then(() => {
+            this.currentScene.create();
+            window.requestAnimationFrame(this.update.bind(this));
+        })
     }
 
     private update(){

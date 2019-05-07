@@ -22,9 +22,9 @@ export class Scene1 extends Scene{
         super("Scene1");
     }
 
-    public preload(){
-        this.loadAudio(song).then((buffer) => this._songBuffer = buffer);
-        this.loadAudio(wet).then((buffer) => this._wetBuffer = buffer);
+    public async preload(){
+        this._songBuffer = await this.loadAudio(song);
+        this._wetBuffer = await this.loadAudio(wet);
     }
 
     public async create(){

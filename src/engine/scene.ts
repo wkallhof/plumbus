@@ -7,7 +7,7 @@ import { Camera } from "./camera";
 import { ImageObject } from "./game-objects/image";
 import { AudioPlayer } from "./audio-player";
 
-export class Scene{
+export abstract class Scene{
 
     public name: string;
     public game!: Game;
@@ -56,18 +56,9 @@ export class Scene{
         return this.audio.stopAudio(source);
     }
 
+    public abstract async preload(): Promise<void>;
 
-    public preload(){
+    public abstract create(): void;
 
-    }
-
-    public create(){
-
-    }
-
-    public update(){
-
-    }
-
-
+    public abstract update(): void;
 }

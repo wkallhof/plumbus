@@ -1,4 +1,4 @@
-import {EventEmitter} from "eventemitter3"
+import { EventEmitter } from "../event-emitter";
 
 export class KeyboardKey extends EventEmitter{
     public keyCode : number;
@@ -24,6 +24,6 @@ export class KeyboardKey extends EventEmitter{
     }
 
     public unbind(){
-        this.removeAllListeners();
+        this.clearListeners();
     }
 }
