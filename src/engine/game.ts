@@ -55,6 +55,7 @@ export class Game{
         this.displayContext.fillStyle = "black";
         this.displayContext.fillRect(0, 0, this.width, this.height);
         this.currentScene.update();
+        this.currentScene.tweens.forEach((tween) => tween.update());
         this.currentScene.camera.render();
 
         this._fpsMonitor.end();

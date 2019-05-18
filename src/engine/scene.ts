@@ -6,6 +6,7 @@ import { Text } from "./game-objects/text";
 import { Camera } from "./camera";
 import { ImageObject } from "./game-objects/image";
 import { AudioPlayer } from "./audio-player";
+import { Tween } from "./tween";
 
 export abstract class Scene{
 
@@ -15,10 +16,12 @@ export abstract class Scene{
     public camera!: Camera
     public gameObjects: GameObject[];
     public audio!: AudioPlayer;
+    public tweens: Tween[];
 
     constructor(name: string){
         this.name = name;
         this.gameObjects = [];
+        this.tweens = [];
     }
 
     public addGameObject(object: GameObject){
@@ -54,6 +57,12 @@ export abstract class Scene{
 
     public stopAudio(source: AudioBufferSourceNode){
         return this.audio.stopAudio(source);
+    }
+
+    public addTween(target: GameObject, props: {}, duration: number, easing : (count: number, startValue: number, delta: number, duration: number) => number){
+        const tween = new Tween(target, props, duration, easing);
+        this.tweens.push(tween);
+        return tween;
     }
 
     public abstract async preload(): Promise<void>;

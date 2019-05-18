@@ -5,6 +5,8 @@ import song from "./song.mp3";
 import wet from "./wet.mp3";
 import { ImageObject } from "../engine/game-objects/image";
 import { GameObject } from "../engine/game-objects/game-object";
+import { Rectangle } from "../engine/game-objects/rectangle";
+import { Tween } from "../engine/tween";
 
 export class Scene1 extends Scene{
 
@@ -18,8 +20,15 @@ export class Scene1 extends Scene{
 
     private _songInstance! : AudioBufferSourceNode;
 
+    private _rect! : Rectangle;
+
+    private _squareTweenRight!: Tween;
+    private _squareTweenRotate!: Tween;
+
     constructor(){
         super("Scene1");
+
+        this._plumbuses = [];
     }
 
     public async preload(){
@@ -32,17 +41,17 @@ export class Scene1 extends Scene{
         const worldHeight = 1000;
 
         this.addRectangle(0, 0, worldWidth, worldHeight, "green", "brown");
-        this.addRectangle(10, 10, 100, 100, "black");
+        this._rect = this.addRectangle(10, 10, 100, 100, "black");
 
-        this._text = this.addText("Hello Plumbus", 30, 30, "white");
-        this._text.rotationCenterXOffset = 100;
+        //this._text = this.addText("Hello Plumbus", 30, 30, "white");
+        //this._text.rotationCenterXOffset = 100;
 
-        this._user = this.addImage(plumbus, 50, 50, 200);
+        //this._user = this.addImage(plumbus, 50, 50, 200);
 
-        this.camera.startFollow(this._user);
-        this.camera.setBounds(0, 0, worldWidth, worldHeight);
+        //this.camera.startFollow(this._user);
+        //this.camera.setBounds(0, 0, worldWidth, worldHeight);
 
-        this.drawPlumbuses();
+        //this.drawPlumbuses();
 
         this.keyboard.P.on("keyup", () => {
             this._songInstance = this.playAudio(this._songBuffer);
@@ -55,6 +64,15 @@ export class Scene1 extends Scene{
         this.keyboard.I.on("keyup", () => {
             this.playAudio(this._wetBuffer);
         })
+
+        this._squareTweenRight = this.addTween(this._rect, { x: 300}, 180, Tween.quadEaseInOut);
+        this._squareTweenRotate = this.addTween(this._rect, { rotation: this._rect.rotation + 3}, 180, Tween.quadEaseOut);
+        this._squareTweenRight.on("update", () => {
+            if(this._squareTweenRight.count > 70 && !this._squareTweenRotate.running)
+                this._squareTweenRotate.start();
+        });
+
+        this._squareTweenRight.start();
     }
 
     private drawPlumbuses() {
@@ -98,7 +116,7 @@ export class Scene1 extends Scene{
         if(this.keyboard.X.isDown)
             this.camera.zoom += 0.01;
 
-        this._text.rotation -= 0.01;
+        //this._text.rotation -= 0.01;
 
         this._plumbuses.forEach((object: GameObject) => {
             object.rotation += 0.01;
