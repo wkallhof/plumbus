@@ -7,18 +7,20 @@ export class Tween extends EventEmitter{
     public duration : number;
     public count: number = 0;
     public running: boolean = false;
+    public loop: boolean = false;
 
     private _initialProps: any = {};
 
     private easing: (count: number, startValue: number, delta: number, duration: number) => number;
 
-    constructor(target: GameObject, props: any, duration: number, easing : (count: number, startValue: number, delta: number, duration: number) => number)
+    constructor(target: GameObject, props: any, duration: number, easing : (count: number, startValue: number, delta: number, duration: number) => number, loop : boolean = false)
     {
         super();
         this.target = target;
         this.props = props;
         this.duration = duration;
         this.easing = easing;
+        this.loop = loop;
     }
     
     public update(){
@@ -31,6 +33,12 @@ export class Tween extends EventEmitter{
             this.running = false;
             this.emit("finish");
             this.setProps(this.target, this.props);
+
+            if(this.loop){
+                this.setProps(this.target, this._initialProps);
+                this.start();
+            }
+                
             return;
         }
 
@@ -76,8 +84,8 @@ export class Tween extends EventEmitter{
     }
 
     private setProps(target:any, props:any){
-        for(var key in this.props){
-            (<any>this.target)[key] = (<any>this.target)[key];
+        for(var key in props){
+            (<any>target)[key] = (<any>props)[key];
         }
     }
 }

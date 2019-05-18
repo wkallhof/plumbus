@@ -20,10 +20,15 @@ export class Scene1 extends Scene{
 
     private _songInstance! : AudioBufferSourceNode;
 
-    private _rect! : Rectangle;
+    private _menuItem1! : Rectangle;
+    private _menuItem1Text! : Text;
+    private _menuItem2! : Rectangle;
+    private _menuItem2Text! : Text;
 
-    private _squareTweenRight!: Tween;
-    private _squareTweenRotate!: Tween;
+    private _menuItem1Tween!: Tween;
+    private _menuItem1TextTween!: Tween;
+    private _menuItem2Tween!: Tween;
+    private _menuItem2TextTween!: Tween;
 
     constructor(){
         super("Scene1");
@@ -41,7 +46,27 @@ export class Scene1 extends Scene{
         const worldHeight = 1000;
 
         this.addRectangle(0, 0, worldWidth, worldHeight, "green", "brown");
-        this._rect = this.addRectangle(10, 10, 100, 100, "black");
+        this._menuItem1 = this.addRectangle(-200, 10, 200, 50, "black");
+        this._menuItem1Text = this.addText("Menu Item 1", -195, 20, "white", 30);
+
+        this._menuItem2 = this.addRectangle(-200, 80, 200, 50, "black");
+        this._menuItem2Text = this.addText("Menu Item 2", -195, 90, "white", 30);
+
+        this._menuItem1Tween = this.addTween(this._menuItem1, {x : 300}, 180, Tween.quadEaseOut);
+        this._menuItem1TextTween = this.addTween(this._menuItem1Text, {x : 320}, 180, Tween.quadEaseOut);
+
+        this._menuItem2Tween = this.addTween(this._menuItem2, {x : 300}, 180, Tween.quadEaseOut);
+        this._menuItem2TextTween = this.addTween(this._menuItem2Text, {x : 320}, 180, Tween.quadEaseOut);
+
+        this._menuItem1Tween.start();
+        this._menuItem1TextTween.start();
+
+        this._menuItem1Tween.on("update", () => {
+            if(!this._menuItem2Tween.running && this._menuItem1Tween.count > 40){
+                this._menuItem2Tween.start();
+                this._menuItem2TextTween.start();
+            }
+        });
 
         //this._text = this.addText("Hello Plumbus", 30, 30, "white");
         //this._text.rotationCenterXOffset = 100;
@@ -64,15 +89,6 @@ export class Scene1 extends Scene{
         this.keyboard.I.on("keyup", () => {
             this.playAudio(this._wetBuffer);
         })
-
-        this._squareTweenRight = this.addTween(this._rect, { x: 300}, 180, Tween.quadEaseInOut);
-        this._squareTweenRotate = this.addTween(this._rect, { rotation: this._rect.rotation + 3}, 180, Tween.quadEaseOut);
-        this._squareTweenRight.on("update", () => {
-            if(this._squareTweenRight.count > 70 && !this._squareTweenRotate.running)
-                this._squareTweenRotate.start();
-        });
-
-        this._squareTweenRight.start();
     }
 
     private drawPlumbuses() {

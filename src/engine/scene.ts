@@ -36,7 +36,7 @@ export abstract class Scene{
     }
 
     public addText(text: string, x: number, y: number, color?: string, fontSize?: number, font?: string){
-        let textObject = new Text(text, x, y, color, fontSize, font);
+        let textObject = new Text(this.game.displayContext, text, x, y, color, fontSize, font);
         this.gameObjects.push(textObject);
         return textObject;
     }
@@ -59,8 +59,8 @@ export abstract class Scene{
         return this.audio.stopAudio(source);
     }
 
-    public addTween(target: GameObject, props: {}, duration: number, easing : (count: number, startValue: number, delta: number, duration: number) => number){
-        const tween = new Tween(target, props, duration, easing);
+    public addTween(target: GameObject, props: {}, duration: number, easing : (count: number, startValue: number, delta: number, duration: number) => number, loop? : boolean){
+        const tween = new Tween(target, props, duration, easing, loop);
         this.tweens.push(tween);
         return tween;
     }
