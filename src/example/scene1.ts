@@ -6,7 +6,7 @@ import wet from "./wet.mp3";
 import { ImageObject } from "../engine/game-objects/image";
 import { GameObject } from "../engine/game-objects/game-object";
 import { Rectangle } from "../engine/game-objects/rectangle";
-import { Tween } from "../engine/tween";
+import { Tween, Easing } from "../engine/tween";
 
 export class Scene1 extends Scene{
 
@@ -26,9 +26,7 @@ export class Scene1 extends Scene{
     private _menuItem2Text! : Text;
 
     private _menuItem1Tween!: Tween;
-    private _menuItem1TextTween!: Tween;
     private _menuItem2Tween!: Tween;
-    private _menuItem2TextTween!: Tween;
 
     constructor(){
         super("Scene1");
@@ -46,37 +44,16 @@ export class Scene1 extends Scene{
         const worldHeight = 1000;
 
         this.addRectangle(0, 0, worldWidth, worldHeight, "green", "brown");
-        this._menuItem1 = this.addRectangle(-200, 10, 200, 50, "black");
-        this._menuItem1Text = this.addText("Menu Item 1", -195, 20, "white", 30);
 
-        this._menuItem2 = this.addRectangle(-200, 80, 200, 50, "black");
-        this._menuItem2Text = this.addText("Menu Item 2", -195, 90, "white", 30);
-
-        this._menuItem1Tween = this.addTween(this._menuItem1, {x : 300}, 180, Tween.quadEaseOut);
-        this._menuItem1TextTween = this.addTween(this._menuItem1Text, {x : 320}, 180, Tween.quadEaseOut);
-
-        this._menuItem2Tween = this.addTween(this._menuItem2, {x : 300}, 180, Tween.quadEaseOut);
-        this._menuItem2TextTween = this.addTween(this._menuItem2Text, {x : 320}, 180, Tween.quadEaseOut);
-
-        this._menuItem1Tween.start();
-        this._menuItem1TextTween.start();
-
-        this._menuItem1Tween.on("update", () => {
-            if(!this._menuItem2Tween.running && this._menuItem1Tween.count > 40){
-                this._menuItem2Tween.start();
-                this._menuItem2TextTween.start();
-            }
-        });
-
-        //this._text = this.addText("Hello Plumbus", 30, 30, "white");
-        //this._text.rotationCenterXOffset = 100;
-
-        //this._user = this.addImage(plumbus, 50, 50, 200);
-
-        //this.camera.startFollow(this._user);
-        //this.camera.setBounds(0, 0, worldWidth, worldHeight);
+        this._text = this.addText("Hello Plumbus", 100, 100, "white", 20);
 
         //this.drawPlumbuses();
+
+        this.createMenu();
+
+        this._user = this.addImage(plumbus, 50, 50, 200);
+        this.camera.startFollow(this._user);
+        this.camera.setBounds(0, 0, worldWidth, worldHeight);
 
         this.keyboard.P.on("keyup", () => {
             this._songInstance = this.playAudio(this._songBuffer);
@@ -89,6 +66,27 @@ export class Scene1 extends Scene{
         this.keyboard.I.on("keyup", () => {
             this.playAudio(this._wetBuffer);
         })
+    }
+
+    private createMenu(){
+        this._menuItem1 = this.addRectangle(-200, 10, 200, 50, "black");
+        this._menuItem1Text = this.addText("Menu Item 1", 10, 10, "white", 30);
+        this._menuItem1Text.parent = this._menuItem1;
+
+        this._menuItem2 = this.addRectangle(-200, 80, 200, 50, "black");
+        this._menuItem2Text = this.addText("Menu Item 2", 10, 10, "white", 30);
+        this._menuItem2Text.parent = this._menuItem2;
+
+        this._menuItem1Tween = this.addTween(this._menuItem1, {x : 300}, 180, Easing.quadOut);
+        this._menuItem2Tween = this.addTween(this._menuItem2, {x : 300}, 180, Easing.quadOut);
+
+        this._menuItem1Tween.start();
+
+        this._menuItem1Tween.on("update", () => {
+            if(!this._menuItem2Tween.running && this._menuItem1Tween.count > 40){
+                this._menuItem2Tween.start();
+            }
+        });
     }
 
     private drawPlumbuses() {
@@ -132,10 +130,12 @@ export class Scene1 extends Scene{
         if(this.keyboard.X.isDown)
             this.camera.zoom += 0.01;
 
-        //this._text.rotation -= 0.01;
+        this._text.rotation -= 0.01;
 
         this._plumbuses.forEach((object: GameObject) => {
             object.rotation += 0.01;
         });
+
+        this._menuItem1.rotation += 0.01;
     }
 }

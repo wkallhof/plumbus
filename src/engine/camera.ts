@@ -88,10 +88,10 @@ export class Camera{
     private drawGameObjects(){
         this.game.currentScene.gameObjects.forEach((object: GameObject, index:number) => 
         {
-            if((object.x + object.width) <= this.x 
-            || (object.y + object.height) <= this.y
-            || (object.x > this.x + (this.width))
-            || (object.y > this.y + (this.height)))
+            if((object.boundingX + object.boundingWidth) <= this.x 
+            || (object.boundingY + object.boundingHeight) <= this.y
+            || (object.boundingX > this.x + (this.width))
+            || (object.boundingY > this.y + (this.height)))
                 return;
 
             object.update(this.game);

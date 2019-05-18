@@ -10,8 +10,6 @@ export class Text extends GameObject{
     constructor(context: CanvasRenderingContext2D, text: string, x: number, y: number, color?: string, fontSize?: number, font?: string){
         super(x, y);
 
-        this.x = x;
-        this.y = y;
         this.text = text;
         this.color = color || "black";
         this.fontSize = fontSize || 12;
@@ -26,7 +24,5 @@ export class Text extends GameObject{
         context.fillStyle = this.color;
         context.font = `${this.fontSize}px ${this.font}`;
         context.fillText(this.text, -Math.floor(this.width / 2), -Math.floor(this.height / 2) + this.height);
-        // context.strokeStyle = this.color;
-        // context.strokeRect(-Math.floor(this.width / 2), -Math.floor(this.height / 2), this.width, this.height);
     }
 }

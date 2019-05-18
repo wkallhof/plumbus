@@ -61,20 +61,6 @@ export class Tween extends EventEmitter{
         this.count = 0;
     }
 
-    public static quadEaseIn(count: number, startValue: number, delta: number, duration: number){
-        return delta*(count/=duration)*count*count*count + startValue;
-    }
-
-    public static quadEaseOut(count: number, startValue: number, delta: number, duration: number){
-        return -delta * ((count=count/duration-1)*count*count*count - 1) + startValue;
-    }
-
-    public static quadEaseInOut(count: number, startValue: number, delta: number, duration: number){
-        return ((count/=duration/2) < 1)
-            ? delta/2*count*count*count*count + startValue
-            : -delta/2 * ((count-=2)*count*count*count - 2) + startValue;
-    }
-
     private getProperty(propertyKey: string) : number{
         return (<any>this.target)[propertyKey];
     }
@@ -87,5 +73,21 @@ export class Tween extends EventEmitter{
         for(var key in props){
             (<any>target)[key] = (<any>props)[key];
         }
+    }
+}
+
+export abstract class Easing{
+    public static quadIn(count: number, startValue: number, delta: number, duration: number){
+        return delta*(count/=duration)*count*count*count + startValue;
+    }
+
+    public static quadOut(count: number, startValue: number, delta: number, duration: number){
+        return -delta * ((count=count/duration-1)*count*count*count - 1) + startValue;
+    }
+
+    public static quadInOut(count: number, startValue: number, delta: number, duration: number){
+        return ((count/=duration/2) < 1)
+            ? delta/2*count*count*count*count + startValue
+            : -delta/2 * ((count-=2)*count*count*count - 2) + startValue;
     }
 }
