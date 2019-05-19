@@ -1,6 +1,7 @@
 import { Game } from "./game";
 import { GameObject } from "./game-objects/game-object";
-import { Rectangle } from "./game-objects/rectangle";
+import { Rectangle } from "./shapes/rectangle.shape";
+import { Point } from "./point";
 
 export class Camera{
     public x: number = 0;
@@ -79,8 +80,7 @@ export class Camera{
     }
 
     public setBounds(x: number, y: number, width: number, height: number){
-        this.bounds.x = x;
-        this.bounds.y = y;
+        this.bounds.position = new Point(x, y);
         this.bounds.width = width;
         this.bounds.height = height;
     }
@@ -92,10 +92,12 @@ export class Camera{
             if(object.parent)
                 return;
 
-            if((object.boundingX + object.boundingWidth) <= this.x 
-            || (object.boundingY + object.boundingHeight) <= this.y
-            || (object.boundingX > this.x + (this.width))
-            || (object.boundingY > this.y + (this.height)))
+            const boundingRectangle = object.boundingRectangle;
+
+            if((boundingRectangle.x + boundingRectangle.width) <= this.x 
+            || (boundingRectangle.y + boundingRectangle.height) <= this.y
+            || (boundingRectangle.x > this.x + (this.width))
+            || (boundingRectangle.y > this.y + (this.height)))
                 return;
 
             object.update(this.game);

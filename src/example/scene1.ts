@@ -1,17 +1,18 @@
 import { Scene } from "../engine/scene";
-import { Text } from "../engine/game-objects/text";
 import plumbus from "./plumbus.png";
 import song from "./song.mp3";
 import wet from "./wet.mp3";
-import { ImageObject } from "../engine/game-objects/image";
+import { ImageObject } from "../engine/game-objects/image.object";
 import { GameObject } from "../engine/game-objects/game-object";
-import { Rectangle } from "../engine/game-objects/rectangle";
 import { Tween, Easing } from "../engine/tween";
+import { RectangleObject } from "../engine/game-objects/rectangle.object";
+import { TextObject } from "../engine/game-objects/text.object";
+import { Point } from "../engine/point";
 
 export class Scene1 extends Scene{
 
     private _user!: ImageObject;
-    private _text!: Text;
+    private _text!: TextObject;
 
     private _plumbuses!: GameObject[];
 
@@ -20,8 +21,8 @@ export class Scene1 extends Scene{
 
     private _songInstance! : AudioBufferSourceNode;
 
-    private _menuItem1! : Rectangle;
-    private _menuItem2! : Rectangle;
+    private _menuItem1! : RectangleObject;
+    private _menuItem2! : RectangleObject;
 
     private _menuItem1Tween!: Tween;
     private _menuItem2Tween!: Tween;
@@ -51,7 +52,10 @@ export class Scene1 extends Scene{
 
         this._user = this.addImage(plumbus, 50, 50, 200);
 
-        this._user.addChild(this.addRectangle(60, 20, 80, 20, "black"));
+        let gun = this.addRectangle(120, 120, 80, 20, "black");
+        gun.rotation = -0.3;
+
+        this._user.addChild(gun);
 
         this.camera.startFollow(this._user);
         this.camera.setBounds(0, 0, worldWidth, worldHeight);
@@ -134,7 +138,5 @@ export class Scene1 extends Scene{
         this._plumbuses.forEach((object: GameObject) => {
             object.rotation += 0.01;
         });
-
-        this._menuItem1.rotation += 0.01;
     }
 }

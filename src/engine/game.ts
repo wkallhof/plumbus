@@ -1,6 +1,5 @@
 import { Scene } from "./scene";
 import { FpsMonitor } from "./fps-monitor";
-import { GameObject } from "./game-objects/game-object";
 import { KeyboardInputManager } from "./input/keyboard-input-manager";
 import { Camera } from "./camera";
 import { AudioPlayer } from "./audio-player";
@@ -14,15 +13,17 @@ export class Game{
     public displayContext: CanvasRenderingContext2D;
 
     public currentScene: Scene;
+    public scenes: {new(): Scene}[];
     
     private _fpsMonitor : FpsMonitor;
 
     private _keyboard : KeyboardInputManager;
 
-    constructor(width: number, height: number, startScene: Scene){
+    constructor(width: number, height: number, scenes: {new(): Scene}[]){
         this.width = width;
         this.height = height;
-        this.currentScene = startScene;
+        this.scenes = scenes;
+        this.currentScene = new scenes[0];
 
         this.displayCanvasElement = document.createElement("canvas");
         document.body.appendChild(this.displayCanvasElement);

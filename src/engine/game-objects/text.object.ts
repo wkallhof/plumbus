@@ -1,14 +1,13 @@
 import { GameObject } from "./game-object";
-import { Game } from "../game";
 
-export class Text extends GameObject{
+export class TextObject extends GameObject{
     public text: string;
     public color: string;
     public fontSize: number;
     public font: string;
 
     constructor(context: CanvasRenderingContext2D, text: string, x: number, y: number, color?: string, fontSize?: number, font?: string){
-        super(x, y);
+        super(x, y, 0, 0);
 
         this.text = text;
         this.color = color || "black";

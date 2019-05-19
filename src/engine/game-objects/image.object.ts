@@ -5,7 +5,7 @@ export class ImageObject extends GameObject{
     public image: HTMLImageElement;
 
     constructor(source: string, x: number, y:number, width?: number){
-        super(x, y);
+        super(x, y, 0, 0);
 
         this.source = source;
         this.image = new Image();

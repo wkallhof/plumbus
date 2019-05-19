@@ -1,16 +1,14 @@
 import { GameObject } from "./game-object";
-import { Game } from "../game";
 
-export class Rectangle extends GameObject{
+export class RectangleObject extends GameObject{
 
     public fillColor: string;
     public borderColor?: string;
 
     constructor(x:number, y:number, width:number, height:number, fillColor?:string, borderColor?:string){
-        super(x, y);
-        this.fillColor = fillColor || "white";
-        this.width = width;
-        this.height = height;      
+        super(x, y, width, height);
+        
+        this.fillColor = fillColor || "white"; 
         this.borderColor = borderColor;
     }
 

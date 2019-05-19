@@ -1,14 +1,33 @@
 import { Game } from "../game";
+import { Rectangle } from "../shapes/rectangle.shape";
 
-export abstract class GameObject{
-    public x : number;
-    public y: number;
-    public width: number = 0;
-    public height: number = 0;
-    public rotation: number = 0;
+export abstract class GameObject extends Rectangle{
 
     public children: GameObject[];
     public parent?: GameObject;
+
+    private _boundingRectangle!: Rectangle;
+
+    public get boundingRectangle() : Rectangle { return this._boundingRectangle; }
+
+    constructor(x: number, y: number, width: number, height: number){
+        super(x, y, width, height);
+        this.calculate();
+
+        this.children = [];
+    }
+
+    protected calculate(){
+        super.calculate();
+
+        // set bounding rect
+        let minX = Math.min(this._p1.x, this._p2.x, this._p3.x, this._p4.x);
+        let minY = Math.min(this._p1.y, this._p2.y, this._p3.y, this._p4.y);
+        let maxX = Math.max(this._p1.x, this._p2.x, this._p3.x, this._p4.x);
+        let maxY = Math.max(this._p1.y, this._p2.y, this._p3.y, this._p4.y);
+
+        this._boundingRectangle = new Rectangle(minX, minY, maxX - minX, maxY - minY);
+    }
 
     public addChild(child: GameObject): void{
         if(child.parent)
@@ -16,32 +35,6 @@ export abstract class GameObject{
 
         child.parent = this;
         this.children.push(child);
-    }
-
-    public get boundingWidth() : number { 
-        return Math.abs(Math.sin(this.rotation)* this.height)  + Math.abs(Math.cos(this.rotation)* this.width) ;
-        
-    }
-    public get boundingHeight() : number { 
-        return Math.abs(Math.sin(this.rotation)* this.width)  + Math.abs(Math.cos(this.rotation)* this.height) ;
-    }
-
-    public get boundingX(): number {
-        return  this.x - ((this.boundingWidth / 2)-(this.width / 2));
-    }
-
-    public get boundingY(): number {
-        return this.y - ((this.boundingHeight / 2)-(this.height / 2));
-    }
-
-    public get currentAngle(): number {
-        return this.rotation * 180 / Math.PI;
-    }
-
-    constructor(x: number, y: number){
-        this.x = x;
-        this.y = y;
-        this.children = [];
     }
 
     public update(game: Game){
@@ -63,9 +56,9 @@ export abstract class GameObject{
             context.translate(-this.x, -this.y);
         }
 
-        //this.renderOutline(context);
+        this.renderOutline(context);
         context.restore();
-        //this.renderBoundingBox(context);
+        this.renderBoundingBox(context);
     }
 
     /**
@@ -76,14 +69,9 @@ export abstract class GameObject{
      * @param context Rendering Context
      */
     private applyRotationTransform(context : CanvasRenderingContext2D) : void {
-        const centerX = Math.floor(this.width / 2);
-        const centerY = Math.floor(this.height / 2);
-        let translateX = this.x + centerX;
-        let translateY = this.y + centerY;
-
-        context.translate(translateX, translateY);
+        context.translate(this.center.x, this.center.y);
         context.rotate(this.rotation);
-        context.translate(-translateX, -translateY);
+        context.translate(-this.center.x, -this.center.y);
     }
 
     /**
@@ -102,7 +90,7 @@ export abstract class GameObject{
      */
     private renderBoundingBox(context : CanvasRenderingContext2D){
         context.strokeStyle = "white";
-        context.strokeRect(this.boundingX , this.boundingY, this.boundingWidth, this.boundingHeight);
+        context.strokeRect(this.boundingRectangle.x , this.boundingRectangle.y, this.boundingRectangle.width, this.boundingRectangle.height);
     }
 
     /**
