@@ -16,11 +16,11 @@ export class Rectangle extends GameObject{
 
     public draw(context : CanvasRenderingContext2D){
         context.fillStyle = this.fillColor;
-        context.fillRect(-Math.floor(this.width / 2), -Math.floor(this.height / 2), this.width, this.height);
+        context.fillRect(this.x, this.y, this.width, this.height);
 
         if(this.borderColor){
             context.strokeStyle = this.borderColor;
-            context.strokeRect(-Math.floor(this.width / 2), -Math.floor(this.height / 2), this.width, this.height);
+            context.strokeRect(this.x, this.y, this.width, this.height);
         }
     }
 }

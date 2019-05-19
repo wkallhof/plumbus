@@ -23,6 +23,6 @@ export class Text extends GameObject{
     public draw(context: CanvasRenderingContext2D){
         context.fillStyle = this.color;
         context.font = `${this.fontSize}px ${this.font}`;
-        context.fillText(this.text, -Math.floor(this.width / 2), -Math.floor(this.height / 2) + this.height);
+        context.fillText(this.text, this.x, this.y + this.height);
     }
 }

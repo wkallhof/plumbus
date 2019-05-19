@@ -17,9 +17,6 @@ export class ImageObject extends GameObject{
     }
 
     public draw(context : CanvasRenderingContext2D){
-        const centerX = -Math.floor(this.width / 2);
-        const centerY = -Math.floor(this.height / 2);
-
-        context.drawImage(this.image, centerX, centerY, this.width, this.height);
+        context.drawImage(this.image, this.x, this.y, this.width, this.height);
     }
 }

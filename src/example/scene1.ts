@@ -21,9 +21,7 @@ export class Scene1 extends Scene{
     private _songInstance! : AudioBufferSourceNode;
 
     private _menuItem1! : Rectangle;
-    private _menuItem1Text! : Text;
     private _menuItem2! : Rectangle;
-    private _menuItem2Text! : Text;
 
     private _menuItem1Tween!: Tween;
     private _menuItem2Tween!: Tween;
@@ -47,11 +45,14 @@ export class Scene1 extends Scene{
 
         this._text = this.addText("Hello Plumbus", 100, 100, "white", 20);
 
-        //this.drawPlumbuses();
+        this.drawPlumbuses();
 
         this.createMenu();
 
         this._user = this.addImage(plumbus, 50, 50, 200);
+
+        this._user.addChild(this.addRectangle(60, 20, 80, 20, "black"));
+
         this.camera.startFollow(this._user);
         this.camera.setBounds(0, 0, worldWidth, worldHeight);
 
@@ -70,12 +71,10 @@ export class Scene1 extends Scene{
 
     private createMenu(){
         this._menuItem1 = this.addRectangle(-200, 10, 200, 50, "black");
-        this._menuItem1Text = this.addText("Menu Item 1", 10, 10, "white", 30);
-        this._menuItem1Text.parent = this._menuItem1;
+        this._menuItem1.addChild(this.addText("Menu Item 1", 10, 10, "white", 30));
 
         this._menuItem2 = this.addRectangle(-200, 80, 200, 50, "black");
-        this._menuItem2Text = this.addText("Menu Item 2", 10, 10, "white", 30);
-        this._menuItem2Text.parent = this._menuItem2;
+        this._menuItem2.addChild(this.addText("Menu Item 2", 10, 10, "white", 30));
 
         this._menuItem1Tween = this.addTween(this._menuItem1, {x : 300}, 180, Easing.quadOut);
         this._menuItem2Tween = this.addTween(this._menuItem2, {x : 300}, 180, Easing.quadOut);

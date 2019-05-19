@@ -88,6 +88,10 @@ export class Camera{
     private drawGameObjects(){
         this.game.currentScene.gameObjects.forEach((object: GameObject, index:number) => 
         {
+            // if the object has a parent, let the parent do the call for updating
+            if(object.parent)
+                return;
+
             if((object.boundingX + object.boundingWidth) <= this.x 
             || (object.boundingY + object.boundingHeight) <= this.y
             || (object.boundingX > this.x + (this.width))
