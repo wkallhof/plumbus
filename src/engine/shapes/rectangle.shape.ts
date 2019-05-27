@@ -1,4 +1,5 @@
 import { Point } from "../point";
+import { Transform } from "../game-objects/transform";
 
 export class Rectangle {
 
@@ -45,16 +46,33 @@ export class Rectangle {
 
     protected calculate(){
         this._center = new Point(this._origin.x + (this._width / 2), this._origin.y + (this._height / 2));
-
-        this._p1 = this.getCornerPointPosition(this._origin, this._center, this._rotation);
-        this._p2 = this.getCornerPointPosition(new Point(this._origin.x + this._width, this._origin.y), this._center, this._rotation);
-        this._p3 = this.getCornerPointPosition(new Point(this._origin.x + this._width, this._origin.y + this._height), this._center, this._rotation);
-        this._p4 = this.getCornerPointPosition(new Point(this._origin.x, this._origin.y + this._height), this._center, this._rotation);
+        this.rotateAroundPoint(this.center, this.rotation);
     }
 
-    private getCornerPointPosition(cornerPoint: Point, centerPoint: Point, rotation: number) : Point{
-        const tempX = cornerPoint.x - centerPoint.x;
-        const tempY = cornerPoint.y - centerPoint.y;
+    public transform(transform : Transform) : Rectangle{
+        const newRectangle = new Rectangle(this.x + transform.position.x, this.y + transform.position.y, this.width, this.height);
+        newRectangle.rotation = this.rotation;
+        newRectangle.rotateAroundPoint2(transform.center, transform.rotation);
+        return newRectangle;
+    }
+
+    public rotateAroundPoint(point: Point, rotation:number){
+        this._p1 = this.getRotatedPointPosition(this._origin, point, rotation);
+        this._p2 = this.getRotatedPointPosition(new Point(this._origin.x + this._width, this._origin.y), point, rotation);
+        this._p3 = this.getRotatedPointPosition(new Point(this._origin.x + this._width, this._origin.y + this._height), point, rotation);
+        this._p4 = this.getRotatedPointPosition(new Point(this._origin.x, this._origin.y + this._height), point, rotation);
+    }
+
+    public rotateAroundPoint2(point: Point, rotation:number){
+        this._p1 = this.getRotatedPointPosition(this._p1, point, rotation);
+        this._p2 = this.getRotatedPointPosition(this._p2, point, rotation);
+        this._p3 = this.getRotatedPointPosition(this._p3, point, rotation);
+        this._p4 = this.getRotatedPointPosition(this._p4, point, rotation);
+    }
+
+    private getRotatedPointPosition(point: Point, centerPoint: Point, rotation: number) : Point{
+        const tempX = point.x - centerPoint.x;
+        const tempY = point.y - centerPoint.y;
 
         // now apply rotation
         const rotatedX = tempX*Math.cos(rotation) - tempY*Math.sin(rotation);

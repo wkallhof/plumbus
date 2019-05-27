@@ -35,15 +35,9 @@ export class Game{
 
         this._keyboard = new KeyboardInputManager();
 
-        this.currentScene.game = this;
-        this.currentScene.camera = new Camera(this, 0, 0, this.width, this.height);
-        this.currentScene.keyboard = this._keyboard;
-        this.currentScene.audio = new AudioPlayer();
+        this.instantiateScene(this.currentScene);
         
-        this.currentScene.preload().then(() => {
-            this.currentScene.create();
-            window.requestAnimationFrame(this.update.bind(this));
-        })
+        window.requestAnimationFrame(this.update.bind(this));
     }
 
     private update(){
@@ -62,5 +56,31 @@ export class Game{
         this._fpsMonitor.end();
 
         window.requestAnimationFrame(this.update.bind(this));
+    }
+
+    public changeScene(sceneName: string):void{
+        this.currentScene.dispose();
+        this._keyboard.unbindKeys();
+
+        const scene = this.scenes.find((scene) => {
+            return scene.name === sceneName;
+        });
+
+        if(!scene)
+            return;
+
+        this.currentScene = new scene();
+        this.instantiateScene(this.currentScene);
+    }
+
+    private instantiateScene(scene : Scene){
+        scene.game = this;
+        scene.camera = new Camera(this, 0, 0, this.width, this.height);
+        scene.keyboard = this._keyboard;
+        scene.audio = new AudioPlayer();
+        
+        scene.preload().then(() => {
+            scene.create();
+        })
     }
 }

@@ -19,7 +19,7 @@ export class Scene1 extends Scene{
     private _songBuffer! : AudioBuffer;
     private _wetBuffer! : AudioBuffer;
 
-    private _songInstance! : AudioBufferSourceNode;
+    private _songInstance? : AudioBufferSourceNode;
 
     private _menuItem1! : RectangleObject;
     private _menuItem2! : RectangleObject;
@@ -44,16 +44,19 @@ export class Scene1 extends Scene{
 
         this.addRectangle(0, 0, worldWidth, worldHeight, "green", "brown");
 
-        this._text = this.addText("Hello Plumbus", 100, 100, "white", 20);
+        //this._text = this.addText("Hello Plumbus", 100, 100, "white", 20);
 
-        this.drawPlumbuses();
+        //this.drawPlumbuses();
 
-        this.createMenu();
+        //this.createMenu();
 
         this._user = this.addImage(plumbus, 50, 50, 200);
 
-        let gun = this.addRectangle(120, 120, 80, 20, "black");
+        let gun = this.addRectangle(400, 120, 80, 20, "black");
         gun.rotation = -0.3;
+
+        let gun2 = this.addRectangle(10, 10, 20, 30, "pink");
+        gun.addChild(gun2);
 
         this._user.addChild(gun);
 
@@ -65,11 +68,15 @@ export class Scene1 extends Scene{
         });
 
         this.keyboard.L.on("keyup", () => {
+            if(!this._songInstance)
+                return;
+
             this.stopAudio(this._songInstance);
         })
 
         this.keyboard.I.on("keyup", () => {
-            this.playAudio(this._wetBuffer);
+            this.changeScene("Scene2");
+            //this.playAudio(this._wetBuffer);
         })
     }
 
@@ -133,7 +140,7 @@ export class Scene1 extends Scene{
         if(this.keyboard.X.isDown)
             this.camera.zoom += 0.01;
 
-        this._text.rotation -= 0.01;
+        //this._text.rotation -= 0.01;
 
         this._plumbuses.forEach((object: GameObject) => {
             object.rotation += 0.01;

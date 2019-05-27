@@ -65,6 +65,16 @@ export abstract class Scene{
         return tween;
     }
 
+    public changeScene(sceneName: string){
+        this.game.changeScene(sceneName);
+    }
+
+    public dispose(){
+        this.gameObjects = [];
+        this.tweens = [];
+        this.audio.dispose();
+    }
+
     public abstract async preload(): Promise<void>;
 
     public abstract create(): void;
