@@ -8,20 +8,22 @@ import { Tween, Easing } from "../engine/tween";
 import { RectangleObject } from "../engine/game-objects/rectangle.object";
 import { TextObject } from "../engine/game-objects/text.object";
 
-export class Scene2 extends Scene{
+export class MenuScene extends Scene{
 
     private _menuItem1! : RectangleObject;
     private _menuItem2! : RectangleObject;
 
     private _menuItem1Tween!: Tween;
     private _menuItem2Tween!: Tween;
+    private _songBuffer!: AudioBuffer;
+    private _songInstance? : AudioBufferSourceNode;
 
     constructor(){
-        super("Scene2");
+        super("MenuScene");
     }
 
     public async preload(){
-
+        this._songBuffer = await this.loadAudio(song);
     }
 
     public async create(){
@@ -33,6 +35,8 @@ export class Scene2 extends Scene{
         this.createMenu();
 
         this.camera.setBounds(0, 0, worldWidth, worldHeight);
+
+        this._songInstance = this.playAudio(this._songBuffer);
 
         this.keyboard.I.on("keyup", () => {
             this.changeScene("Scene1");

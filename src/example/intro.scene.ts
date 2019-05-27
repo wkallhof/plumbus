@@ -34,7 +34,7 @@ export class IntroScene extends Scene{
         }
         else if(!this._timerSet){
             setTimeout(() => {
-                this.changeScene("Scene2");
+                this.changeScene("MenuScene");
             }, 2000);
             this._timerSet = true;
         }

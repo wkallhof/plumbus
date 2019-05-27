@@ -75,7 +75,7 @@ export class Scene1 extends Scene{
         })
 
         this.keyboard.I.on("keyup", () => {
-            this.changeScene("Scene2");
+            this.changeScene("MenuScene");
             //this.playAudio(this._wetBuffer);
         })
     }

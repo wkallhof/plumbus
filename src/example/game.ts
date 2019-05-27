@@ -1,6 +1,6 @@
 import { Game } from "../engine/game";
-import { Scene1 } from "./scene1";
-import { Scene2 } from "./scene2";
+import { Scene1 } from "./scene1.scene";
+import { MenuScene } from "./menu.scene";
 import { IntroScene } from "./intro.scene";
 
-var game = new Game(800, 600, [IntroScene, Scene1, Scene2]);
+var game = new Game(800, 600, [IntroScene, MenuScene, Scene1 ]);

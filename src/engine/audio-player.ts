@@ -1,24 +1,18 @@
 export class AudioPlayer {
 
-    private _context? : AudioContext;
+    private _context : AudioContext;
 
     constructor(){
         this._context = new AudioContext();
     }
 
     public async loadAudio(filepath: string) {
-        if(!this._context)
-            return Promise.reject();
-
         const response = await fetch(filepath);
         const arrayBuffer = await response.arrayBuffer();
         return this._context.decodeAudioData(arrayBuffer);
     }
 
     public playAudio(source: AudioBuffer){
-        if(!this._context)
-            return;
-
         const trackSource = this._context.createBufferSource();
         trackSource.buffer = source;
         trackSource.connect(this._context.destination)
@@ -31,6 +25,6 @@ export class AudioPlayer {
     }
 
     public dispose(){
-        this._context = undefined;
+        this._context.close();
     }
 }
