@@ -4,10 +4,7 @@ import song from "./song.mp3";
 import wet from "./wet.mp3";
 import { ImageObject } from "../engine/game-objects/image.object";
 import { GameObject } from "../engine/game-objects/game-object";
-import { Tween, Easing } from "../engine/tween";
-import { RectangleObject } from "../engine/game-objects/rectangle.object";
 import { TextObject } from "../engine/game-objects/text.object";
-import { Point } from "../engine/point";
 
 export class Scene1 extends Scene{
 
@@ -20,12 +17,6 @@ export class Scene1 extends Scene{
     private _wetBuffer! : AudioBuffer;
 
     private _songInstance? : AudioBufferSourceNode;
-
-    private _menuItem1! : RectangleObject;
-    private _menuItem2! : RectangleObject;
-
-    private _menuItem1Tween!: Tween;
-    private _menuItem2Tween!: Tween;
 
     constructor(){
         super("Scene1");
@@ -44,11 +35,9 @@ export class Scene1 extends Scene{
 
         this.addRectangle(0, 0, worldWidth, worldHeight, "green", "brown");
 
-        //this._text = this.addText("Hello Plumbus", 100, 100, "white", 20);
+        this._text = this.addText("Hello Plumbus", 100, 100, "white", 20);
 
-        //this.drawPlumbuses();
-
-        //this.createMenu();
+        this.drawPlumbuses();
 
         this._user = this.addImage(plumbus, 50, 50, 200);
 
@@ -78,25 +67,6 @@ export class Scene1 extends Scene{
             this.changeScene("MenuScene");
             //this.playAudio(this._wetBuffer);
         })
-    }
-
-    private createMenu(){
-        this._menuItem1 = this.addRectangle(-200, 10, 200, 50, "black");
-        this._menuItem1.addChild(this.addText("Menu Item 1", 10, 10, "white", 30));
-
-        this._menuItem2 = this.addRectangle(-200, 80, 200, 50, "black");
-        this._menuItem2.addChild(this.addText("Menu Item 2", 10, 10, "white", 30));
-
-        this._menuItem1Tween = this.addTween(this._menuItem1, {x : 300}, 180, Easing.quadOut);
-        this._menuItem2Tween = this.addTween(this._menuItem2, {x : 300}, 180, Easing.quadOut);
-
-        this._menuItem1Tween.start();
-
-        this._menuItem1Tween.on("update", () => {
-            if(!this._menuItem2Tween.running && this._menuItem1Tween.count > 40){
-                this._menuItem2Tween.start();
-            }
-        });
     }
 
     private drawPlumbuses() {

@@ -93,7 +93,7 @@ export abstract class GameObject extends Rectangle{
         // draw object
         this.draw(context);
 
-        this.renderOutline(context);
+        //this.renderOutline(context);
 
         this.applyRotationTransform(context, this.center, -this.rotation);
 
@@ -104,10 +104,10 @@ export abstract class GameObject extends Rectangle{
 
         this.transforms.reverse();
         
-        this.renderBoundingBox(context);
+        //this.renderBoundingBox(context);
 
-        if(this._worldRectangle)
-            this.renderWorldBox(context);
+        // if(this._worldRectangle)
+        //     this.renderWorldBox(context);
 
         if(this.children.length > 0){
             this.children.forEach((child: GameObject) => child.update(game));
